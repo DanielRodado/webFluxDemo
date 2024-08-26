@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/api/items")
-@Tag(name = "Item Operations", description = "\"Operations related to item management.")
+@Tag(name = "Item Operations", description = "Operations related to item management.")
 public class ItemController {
 
     @Autowired
@@ -71,7 +71,7 @@ public class ItemController {
                     description = "The data to create a new item.",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = Item.class),
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = ItemApplicationDTO.class),
                             examples =  @ExampleObject(
                                             name = "Item create example",
                                             summary = "Item create details",
@@ -99,15 +99,7 @@ public class ItemController {
             @ApiResponse(
                     responseCode = "400",
                     description = "Bad Request - Invalid input data",
-                    content = @Content(
-                            mediaType = "application/json",
-                            examples = @ExampleObject(
-                                            name = "Error Example",
-                                            summary = "Create a new item Error",
-                                            description = "Example of error response when item creation fails due to invalid input.",
-                                            value = "{ \"error\": \"Invalid name\" }"
-                            )
-                    )
+                    content = @Content(schema = @Schema(hidden = true))
             )
     })
     @PostMapping("/create")
@@ -118,6 +110,19 @@ public class ItemController {
     @Operation(
             summary = "Update an existing item",
             description = "Updates the item identified by the given item ID with the data provided.",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "The data to update an item.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = ItemApplicationDTO.class),
+                            examples =  @ExampleObject(
+                                    name = "Item update example",
+                                    summary = "Item update details",
+                                    description = "Example data for update an Item.",
+                                    value = "{ \"name\": \"Item N\"}"
+                            )
+                    )
+            ),
             parameters = @Parameter(
                     name = "id",
                     description = "The ID of the item to update.",
